@@ -7,13 +7,17 @@ package com.asib27.playerdatabasesystem;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -158,6 +162,10 @@ public class PlayerDataBase {
         return high.toArray(new Player[0]);
     }
     
+    public boolean addRecord(Player p){
+        return playerList.add(p);
+    }
+    
     @Override
     public String toString() {
         String str = "";
@@ -210,5 +218,17 @@ public class PlayerDataBase {
     public void setPlayers(Player[] players){
         playerList.clear();
         playerList.addAll(Arrays.asList(players));
+    }
+    
+    public void writeTofile(File file){
+        try {
+            try (var pr = new PrintWriter(file)) {
+                for (var player : playerList) {
+                    pr.println(player);
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
     }
 }

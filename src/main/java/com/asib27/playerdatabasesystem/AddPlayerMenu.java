@@ -149,9 +149,10 @@ public class AddPlayerMenu extends MenuControl{
         }
         p.setSalary(salary);
         
-        System.out.println(p);
-        System.out.println("Playes is not add IMPLEMENT IT");
-        return "Adding Player to Database.......\nPlayer Added Successfully";
+        if(dataBase.addRecord(p))
+            return "Adding Player to Database.......\nPlayer Added Successfully";
+        else
+            return "Sorry Player cannot be added to database.";
     }
 
     public static void main(String[] args) {

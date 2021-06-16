@@ -1,9 +1,4 @@
-1) Design and implement "Add Player Class"
-     -> Implement add Player method in PlayerDataBase class
-     -> call this method from addPlayer class
 2} Implement type safety in db class
-4) Main class: read from file
-               write to file
 5) Player data output : formatting needed
 6) Add java doc
 7) Plan to add graphics
