@@ -26,3 +26,4 @@ Pierre-Emerick Aubameyang,Gabon,31,1.87,Arsenal,Forward,14,250000.0
 Jamal Bhuiyan,Bangladesh,26,1.8,Basundhora Kings,Midfielder,6,200000.0
 Riad Mahrej,senegal,28,1.79,Manchester City,Forward,9,1000000.0
 Gabriel Jesus,Brazil,24,1.9,Manchester City,Forward,9,100000.0
+Christiano Ronaldo,Portugal,37,1.9,Juventus,Forward,7,200000.0

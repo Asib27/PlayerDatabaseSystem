@@ -11,7 +11,7 @@ package com.asib27.playerdatabasesystem;
  */
 public class PlayerSearchingMenu extends MenuControl{
 
-    public PlayerSearchingMenu(PlayerDataBase dataBase) {
+    public PlayerSearchingMenu(PlayerDataBaseInt dataBase) {
         super(dataBase, "Player Search Menu");
         
         String[] mItem = {"By Player Name","By Club and Country","By Position","By Salary Range","Country-wise player count","Back to Main Menu"};
@@ -83,7 +83,7 @@ public class PlayerSearchingMenu extends MenuControl{
         System.out.println("Enter Club Name");
         String clubName = sc.nextLine();
         
-        Player[] all = dataBase.getPlayers();
+        Player[] all = dataBase.getAllRecords();
         
         if(!countryName.equalsIgnoreCase("any")){
             all = new PlayerDataBase(all).query(PlayerAttribute.COUNTRY, countryName);

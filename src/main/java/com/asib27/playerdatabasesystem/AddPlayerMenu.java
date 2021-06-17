@@ -10,7 +10,7 @@ package com.asib27.playerdatabasesystem;
  * @author USER
  */
 public class AddPlayerMenu extends MenuControl{
-    public AddPlayerMenu(PlayerDataBase db) {
+    public AddPlayerMenu(PlayerDataBaseInt db) {
         super(db, "Add Player Menu ");
         //String[] menuItem = {"Add More Player", "Return to Main Menu"};
         //super.setMenuItem(menuItem);

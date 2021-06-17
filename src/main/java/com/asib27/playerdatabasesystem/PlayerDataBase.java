@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  *
  * @author USER
  */
-public class PlayerDataBase {
+public class PlayerDataBase implements PlayerDataBaseInt{
     private ArrayList<Player> playerList;
 
     public PlayerDataBase(File file) {
@@ -70,13 +70,17 @@ public class PlayerDataBase {
     }
     
     public <T extends Comparable>Player[] queryRange(PlayerAttribute field, T start, T end){
+        if(start.getClass() != end.getClass()) return null;
+        
         ArrayList<Player> matched = new ArrayList();
         
         for (var player : playerList) {
-            T data = (T) player.get(field);
-            
-            if(data.compareTo(start) >= 0 && data.compareTo(end) <= 0)
-                matched.add(new Player(player));
+            try{
+                if(player.compare(field, start) >= 0 && player.compare(field, end) <= 0)
+                    matched.add(new Player(player));
+            }catch(ClassCastException ex){
+                return null;
+            }
         }
         
         return matched.toArray(new Player[0]);
@@ -112,7 +116,7 @@ public class PlayerDataBase {
         return count;
     }
 
-    public <T extends Comparable>Player[] getMaxField(PlayerAttribute field){
+    public Player[] getMaxField(PlayerAttribute field){
         if(playerList.isEmpty()) return null;
         
         ArrayList<Player> high = new ArrayList();
@@ -122,14 +126,13 @@ public class PlayerDataBase {
         for (int i = 1; i < playerList.size(); i++) {
             Player player = playerList.get(i);
             
-            T a = (T) player.get(field);
-            T b = (T) p.get(field);
+            int result = player.compare(field, p);
 
-            if (a.compareTo(b) > 0) {
+            if (result > 0) {
                 high.clear();
                 p = new Player(player);
                 high.add(p);
-            } else if (a.compareTo(b) == 0) {
+            } else if (result == 0) {
                 high.add(new Player(player));
             }
         }
@@ -137,7 +140,7 @@ public class PlayerDataBase {
         return high.toArray(new Player[0]);
     }
     
-    public <T extends Comparable>Player[] getMinField(PlayerAttribute field){
+    public Player[] getMinField(PlayerAttribute field){
         if(playerList.isEmpty()) return null;
         
         ArrayList<Player> high = new ArrayList();
@@ -147,14 +150,13 @@ public class PlayerDataBase {
         for (int i = 1; i < playerList.size(); i++) {
             Player player = playerList.get(i);
             
-            T a = (T) player.get(field);
-            T b = (T) p.get(field);
-
-            if (a.compareTo(b) < 0) {
+            int result = player.compare(field, p);
+            
+            if (result < 0) {
                 high.clear();
                 p = new Player(player);
                 high.add(p);
-            } else if (a.compareTo(b) == 0) {
+            } else if (result == 0) {
                 high.add(new Player(player));
             }
         }
@@ -164,6 +166,10 @@ public class PlayerDataBase {
     
     public boolean addRecord(Player p){
         return playerList.add(p);
+    }
+    
+    public boolean removeRecord(Player p){
+        return playerList.remove(p);
     }
     
     @Override
@@ -187,9 +193,10 @@ public class PlayerDataBase {
         System.out.println(pdb);
         
         System.out.println(Arrays.toString(pdb.query(PlayerAttribute.CLUB, "Manchester United")));
-        System.out.println(Arrays.toString(pdb.queryRange(PlayerAttribute.SALARY, 100000.0, 200000.0)));
+        System.out.println("");
+        System.out.println(Arrays.toString(pdb.queryRange(PlayerAttribute.AGE, "Asib", "Labiba")));
         System.out.println(pdb.counAlltFields(PlayerAttribute.HEIGHT));
-        
+      
         Player p = pdb.query(PlayerAttribute.NAME, "Bruno Fernandes")[0];
         System.out.println(p);
         p.setClub("Real Madrid");
@@ -198,14 +205,14 @@ public class PlayerDataBase {
         
         System.out.println("");
         
-        Player[] maxClub = pdb.getMinField(PlayerAttribute.AGE);
+        Player[] maxClub = pdb.getMaxField(PlayerAttribute.AGE);
         System.out.println(Arrays.toString(maxClub));
         maxClub[0].setCountry("Bangladesh");
         System.out.println(Arrays.toString(maxClub));
-        System.out.println(Arrays.toString(pdb.getMinField(PlayerAttribute.CLUB)));
+        System.out.println(Arrays.toString(pdb.getMaxField(PlayerAttribute.CLUB)));
     }
     
-    public Player[] getPlayers(){
+    public Player[] getAllRecords(){
         Player[] all = new Player[playerList.size()];
         
         for (int i = 0; i < all.length; i++) {

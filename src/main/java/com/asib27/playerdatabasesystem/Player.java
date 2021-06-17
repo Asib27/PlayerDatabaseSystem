@@ -9,11 +9,6 @@ package com.asib27.playerdatabasesystem;
  *
  * @author Asib27
  */
-enum PlayerAttribute{
-    NAME, COUNTRY, AGE, HEIGHT, CLUB, POSITION, JURSEY, SALARY;
-    
-    static int noOfAttribute = 8;
-}
 
 public class Player {
     private String name;
@@ -106,6 +101,17 @@ public class Player {
         return ob;
     }
     
+    public <T extends Comparable>int compare(PlayerAttribute field, T c){
+        Object ob = this.get(field);
+        
+        return c.compareTo(ob) * (-1);
+    }
+    
+    public <T extends Comparable>int compare(PlayerAttribute field, Player p){
+        T ob = (T) this.get(field);
+        
+        return ob.compareTo(p.get(field));
+    }
     
     public static void main(String[] args) {
         String line = "David de Gea,Spain,30,1.92,Manchester United,Goalkeeper,1,375000.0";
@@ -113,6 +119,7 @@ public class Player {
         System.out.println(p);
         
         System.out.println(p.get(PlayerAttribute.CLUB));
+        System.out.println(p.compare(PlayerAttribute.AGE, 31));
     }
 
     

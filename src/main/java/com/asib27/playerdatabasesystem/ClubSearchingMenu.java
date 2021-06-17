@@ -11,7 +11,7 @@ package com.asib27.playerdatabasesystem;
  */
 public class ClubSearchingMenu extends MenuControl{
 
-    public ClubSearchingMenu(PlayerDataBase db) {
+    public ClubSearchingMenu(PlayerDataBaseInt db) {
         super(db, "Club Searching Menu");
         String[] menuItem = {"Player(s) with the maximum salary of a club","Player(s) with the maximum age of a club","Player(s) with the maximum height of a club","Total yearly salary of a club","Back to Main Menu"};
         super.setMenuItem(menuItem);
@@ -49,14 +49,14 @@ public class ClubSearchingMenu extends MenuControl{
         }
     }
     
-    private PlayerDataBase getClubDataBase(){
+    private PlayerDataBaseInt getClubDataBase(){
         System.out.println("Enter name of club : ");
         String clubName = sc.nextLine();
         clubName = clubName.trim();
         
         if(dataBase.countField(PlayerAttribute.CLUB, clubName) != 0){
             Player[] clubPlayers = dataBase.query(PlayerAttribute.CLUB, clubName);
-            PlayerDataBase clubDataBase = new PlayerDataBase(clubPlayers);
+            PlayerDataBaseInt clubDataBase = new PlayerDataBase(clubPlayers);
             return clubDataBase;
         }
         else{
@@ -65,7 +65,7 @@ public class ClubSearchingMenu extends MenuControl{
     }
     
     private void processMaxQuery(PlayerAttribute field){
-        PlayerDataBase clubDataBase = getClubDataBase();
+        PlayerDataBaseInt clubDataBase = getClubDataBase();
         
         if(clubDataBase != null){
             System.out.println("Finding Player.......");
@@ -78,11 +78,11 @@ public class ClubSearchingMenu extends MenuControl{
     }
     
     private void findTotalSalary(){
-        PlayerDataBase clubDataBase = getClubDataBase();
+        PlayerDataBaseInt clubDataBase = getClubDataBase();
         double sal = 0;
         
         if(clubDataBase != null){
-            for (var player: clubDataBase.getPlayers()) {
+            for (var player: clubDataBase.getAllRecords()) {
                 sal += (double)player.get(PlayerAttribute.SALARY);
             }
             

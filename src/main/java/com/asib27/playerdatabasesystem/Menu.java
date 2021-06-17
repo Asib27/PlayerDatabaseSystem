@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class Menu extends MenuControl{
 
-    public Menu(PlayerDataBase db) {
+    public Menu(PlayerDataBaseInt db) {
         super(db, "Main Menu");
         
         String[] menuI = {"Search Players","Search Clubs","Add Player","Exit System"};
@@ -55,7 +55,7 @@ public class Menu extends MenuControl{
         File file =  new File(fileName);
         
         
-        PlayerDataBase pdb = new PlayerDataBase(file);
+        PlayerDataBaseInt pdb = new PlayerDataBase(file);
         new Menu(pdb).run();
     }
 }

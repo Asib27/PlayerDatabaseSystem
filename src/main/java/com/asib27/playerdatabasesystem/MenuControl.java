@@ -18,16 +18,16 @@ import java.util.Scanner;
 abstract class MenuControl{
     private String menuName;
     private String[] menuItem;
-    PlayerDataBase dataBase;
+    PlayerDataBaseInt dataBase;
     private int exitOp;
     static Scanner sc =  new Scanner(System.in);
 
-    public MenuControl(PlayerDataBase dataBase, String menuName) {
+    public MenuControl(PlayerDataBaseInt dataBase, String menuName) {
         this.dataBase = dataBase;
         this.menuName = menuName;
     }
 
-    public MenuControl(PlayerDataBase dataBase, String menuName, String[] menuItem) {
+    public MenuControl(PlayerDataBaseInt dataBase, String menuName, String[] menuItem) {
         this.menuName = menuName;
         this.menuItem = menuItem;
         this.dataBase = dataBase;

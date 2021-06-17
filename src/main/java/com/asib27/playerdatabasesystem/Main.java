@@ -16,7 +16,7 @@ public class Main {
         String inputfileName = "G:\\Java\\PlayerDataBaseSystem\\src\\main\\java\\com\\asib27\\playerdatabasesystem\\playersData.txt";
         File inFile =  new File(inputfileName);
         
-        PlayerDataBase myDataBase = new PlayerDataBase(inFile);
+        PlayerDataBaseInt myDataBase = new PlayerDataBase(inFile);
         Menu myMenu = new Menu(myDataBase);
         myMenu.run();
         
