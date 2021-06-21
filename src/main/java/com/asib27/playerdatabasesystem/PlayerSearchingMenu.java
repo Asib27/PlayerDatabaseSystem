@@ -5,6 +5,8 @@
  */
 package com.asib27.playerdatabasesystem;
 
+import java.util.Arrays;
+
 /**
  *
  * @author USER
@@ -54,34 +56,37 @@ public class PlayerSearchingMenu extends MenuControl{
     private void searchByPlayer() {
         System.out.println("Search by player name\nEnter Player Name");
         
-        String name = sc.nextLine();
+        String name = sc.nextLine().trim();
         Player[] sameName = dataBase.query(PlayerAttribute.NAME, name);
         
         if(sameName.length == 0)
             System.out.println("Sorry No player found with this name");
         else{
-            System.out.println("Player FOund " + sameName.length);
-            System.out.println(sameName[0]);
+            System.out.println("Player Found ");
+            System.out.println(sameName[0].format("\n"));
         }
     }
 
     private void seachByPosition() {
         System.out.println("Search by player position\nEnter Player Position");
         
-        String name = sc.nextLine();
-        Player[] samePos = dataBase.query(PlayerAttribute.POSITION, name);
-        
-        printPlayers(samePos);
+        String name = sc.nextLine().trim();
+        if(Player.isValidPosition(name)){
+            Player[] samePos = dataBase.query(PlayerAttribute.POSITION, name);
+            printPlayers(samePos);
+        }
+        else
+            System.out.println("Sorry There is no player position named " + name);
     }
 
     private void searchByClubAndCountry() {
         System.out.println("Search by club and country");
         
         System.out.println("Enter Country Name");
-        String countryName = sc.nextLine();
+        String countryName = sc.nextLine().trim();
         
         System.out.println("Enter Club Name");
-        String clubName = sc.nextLine();
+        String clubName = sc.nextLine().trim();
         
         Player[] all = dataBase.getAllRecords();
         
@@ -101,9 +106,9 @@ public class PlayerSearchingMenu extends MenuControl{
         
         System.out.println("Enter starting and ending salary");
         
-        double salStart = sc.nextDouble();
-        double salEnd = sc.nextDouble();
-        sc.skip("\n");
+        double salStart = getDoubleInput(sc);
+        double salEnd = getDoubleInput(sc);
+        sc.nextLine();
         
         Player[] ans = dataBase.queryRange(PlayerAttribute.SALARY, salStart, salEnd);
         printPlayers(ans);
@@ -125,8 +130,12 @@ public class PlayerSearchingMenu extends MenuControl{
             System.out.println("Sorry no player found");
         else{
             System.out.println("Players Found : " + pl.length);
-            for (Player player : pl) {
-                System.out.println(player);
+            for (var player : pl) {
+                String playerInfo = player.format(",");
+                int firstSep = playerInfo.indexOf(',');
+                
+                System.out.println(playerInfo.substring(0, firstSep));
+                System.out.println(playerInfo.substring(firstSep + 1) + '\n');
             }
         }
     }

@@ -13,14 +13,14 @@ import java.io.File;
  */
 public class Main {
     public static void main(String[] args) {
-        String inputfileName = "G:\\Java\\PlayerDataBaseSystem\\src\\main\\java\\com\\asib27\\playerdatabasesystem\\playersData.txt";
+        String inputfileName = "src\\main\\java\\com\\asib27\\playerdatabasesystem\\playersData.txt";
         File inFile =  new File(inputfileName);
         
         PlayerDataBaseInt myDataBase = new PlayerDataBase(inFile);
         Menu myMenu = new Menu(myDataBase);
         myMenu.run();
         
-        String outputFileName = "G:\\Java\\PlayerDataBaseSystem\\src\\main\\java\\com\\asib27\\playerdatabasesystem\\playersData.txt";
+        String outputFileName = "src\\main\\java\\com\\asib27\\playerdatabasesystem\\playersData.txt";
         File outFile = new File(outputFileName);
         myDataBase.writeTofile(outFile);
     }

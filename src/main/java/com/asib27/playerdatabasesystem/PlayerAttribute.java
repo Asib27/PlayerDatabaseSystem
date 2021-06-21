@@ -10,8 +10,20 @@ package com.asib27.playerdatabasesystem;
  * @author USER
  */
 public enum PlayerAttribute {
-    NAME, COUNTRY, AGE, HEIGHT, CLUB, POSITION, JURSEY, SALARY;
+    NAME("Name"), COUNTRY("Country"), AGE("Age"), HEIGHT("Height"), 
+    CLUB("Club"), POSITION("Position"), JURSEY("Jursey"), SALARY("Salary");
     
     static int noOfAttribute = 8;
+    private final String str;
+
+    private PlayerAttribute(String str) {
+        this.str = str;
+    }
+
+    @Override
+    public String toString() {
+        return str;
+    }
+    
 }
 

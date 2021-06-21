@@ -13,11 +13,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.TreeMap;
 
 /**
  *
@@ -27,20 +24,13 @@ public class PlayerDataBase implements PlayerDataBaseInt{
     private ArrayList<Player> playerList;
 
     public PlayerDataBase(File file) {
-        playerList = new ArrayList();
+        playerList = new ArrayList<>();
         
-        FileReader reader = null;
-        BufferedReader br = null;
-        
-        try {
-            reader = new FileReader(file);
-            br = new BufferedReader(reader);
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line = null;
             while( (line = br.readLine()) != null){
                 playerList.add(new Player(line));
             }
-            
-            br.close();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -58,18 +48,20 @@ public class PlayerDataBase implements PlayerDataBaseInt{
         playerList = new ArrayList();
     }
     
+    @Override
     public Player[] query(PlayerAttribute field, Object ob){
         ArrayList<Player> matched = new ArrayList();
         
-        for (Player player : playerList) {
-            if(ob.equals(player.get(field)))
+        for (var player : playerList) {
+            if(player.compare(field, ob) == 0)
                 matched.add(new Player(player));
         }
         
-        return /*(Player[])*/ matched.toArray(new Player[0]);
+        return  matched.toArray(new Player[0]);
     }
     
-    public <T extends Comparable>Player[] queryRange(PlayerAttribute field, T start, T end){
+    @Override
+    public Player[] queryRange(PlayerAttribute field, Comparable<?> start, Comparable<?> end){
         if(start.getClass() != end.getClass()) return null;
         
         ArrayList<Player> matched = new ArrayList();
@@ -86,10 +78,11 @@ public class PlayerDataBase implements PlayerDataBaseInt{
         return matched.toArray(new Player[0]);
     }
     
+    @Override
     public Map<String, Integer> counAlltFields(PlayerAttribute field){
-        Map<String, Integer> mp = new HashMap();
+        Map<String, Integer> mp = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         
-        for (Player player : playerList) {
+        for (var player : playerList) {
             String data = null;
             Object ob = player.get(field);
             
@@ -105,17 +98,19 @@ public class PlayerDataBase implements PlayerDataBaseInt{
     }
     
    
+    @Override
     public int countField(PlayerAttribute field, Object val){
         int count = 0;
         
         for (var player : playerList) {
-            if(player.get(field).equals(val))
+            if(player.compare(field, val) == 0)
                 count++;
         }
         
         return count;
     }
 
+    @Override
     public Player[] getMaxField(PlayerAttribute field){
         if(playerList.isEmpty()) return null;
         
@@ -140,10 +135,11 @@ public class PlayerDataBase implements PlayerDataBaseInt{
         return high.toArray(new Player[0]);
     }
     
+    @Override
     public Player[] getMinField(PlayerAttribute field){
         if(playerList.isEmpty()) return null;
         
-        ArrayList<Player> high = new ArrayList();
+        ArrayList<Player> high = new ArrayList<>();
         Player p = new Player(playerList.get(0));
         high.add(p);
         
@@ -212,6 +208,7 @@ public class PlayerDataBase implements PlayerDataBaseInt{
         System.out.println(Arrays.toString(pdb.getMaxField(PlayerAttribute.CLUB)));
     }
     
+    @Override
     public Player[] getAllRecords(){
         Player[] all = new Player[playerList.size()];
         
@@ -222,18 +219,18 @@ public class PlayerDataBase implements PlayerDataBaseInt{
         return all;
     }
     
+    @Override
     public void setPlayers(Player[] players){
         playerList.clear();
         playerList.addAll(Arrays.asList(players));
     }
     
+    @Override
     public void writeTofile(File file){
-        try {
-            try (var pr = new PrintWriter(file)) {
-                for (var player : playerList) {
-                    pr.println(player);
-                }
-            }
+        try (var pr = new PrintWriter(file)) {
+            playerList.forEach(player -> {
+                pr.println(player);
+            });
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         }

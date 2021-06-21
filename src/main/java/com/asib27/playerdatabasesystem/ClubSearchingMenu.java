@@ -38,14 +38,14 @@ public class ClubSearchingMenu extends MenuControl{
                 res = "Back to Main Menu............";
                 break;
         }
-        
         return res;
     }
     
     private void printPlayers(Player[] pl){
         System.out.println("Players Found : " + pl.length);
         for (Player player : pl) {
-            System.out.println(player);
+            System.out.println(player.format("\n"));
+            System.out.println("");
         }
     }
     
@@ -86,7 +86,7 @@ public class ClubSearchingMenu extends MenuControl{
                 sal += (double)player.get(PlayerAttribute.SALARY);
             }
             
-            System.out.println("Total salary of players : " + sal * 52);
+            System.out.printf("Total salary of players : %,.2f\n" , sal * 52);
         }
         else{
             System.out.println("Sorry No CLub found with this name");

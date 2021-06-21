@@ -43,8 +43,8 @@ abstract class MenuControl{
             input = takeInput();
             String result = executeCommand(input);
             showResult(result);
-
-        }while(input != menuItem.length);
+            
+        }while(input != getExitOp());
     }
     
     protected void showCommand(){
@@ -64,28 +64,45 @@ abstract class MenuControl{
     
     protected int takeInput(){
         System.out.println("Your input");
-        //System.out.flush();
         
-        int input = sc.nextInt();
+        int input = getIntInput(sc);
         while(input <= 0 || input > menuItem.length){
             System.out.println("Input should be within 1-" + menuItem.length);
             System.out.println("Your Input");
-            //System.out.flush();
             
-            input = sc.nextInt();
+            input = getIntInput(sc);
         }
         
-        sc.skip("\n");
+        sc.nextLine();
         return input;
     }
     
     abstract protected String executeCommand(int input);
+    
+    protected int getIntInput(Scanner sc){
+        while(!sc.hasNextInt()){
+            sc.nextLine();
+            System.out.println("Please enter a integer value");
+        }
+        
+        return sc.nextInt();
+    }
+    
+    protected double getDoubleInput(Scanner sc){
+        while(!sc.hasNextDouble()){
+            sc.nextLine();
+            System.out.println("Please enter a fractional value");
+        }
+        return sc.nextDouble();
+    }
+    
     protected void showResult(String result){
         System.out.println(result);
     }
 
     public void setMenuItem(String[] menuItem) {
         this.menuItem = menuItem;
+        this.exitOp = menuItem.length;
     }
     
     public int getExitOp() {

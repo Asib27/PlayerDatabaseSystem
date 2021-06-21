@@ -6,7 +6,6 @@
 package com.asib27.playerdatabasesystem;
 
 import java.io.File;
-import java.util.Scanner;
 
 /**
  *
@@ -51,7 +50,7 @@ public class Menu extends MenuControl{
     }
     
     public static void main(String[] args) {
-        String fileName = "G:\\Java\\PlayerDataBaseSystem\\src\\main\\java\\com\\asib27\\playerdatabasesystem\\players.txt";
+        String fileName = "PlayerDataBaseSystem\\src\\main\\java\\com\\asib27\\playerdatabasesystem\\players.txt";
         File file =  new File(fileName);
         
         

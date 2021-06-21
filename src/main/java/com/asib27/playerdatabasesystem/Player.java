@@ -5,6 +5,10 @@
  */
 package com.asib27.playerdatabasesystem;
 
+import java.util.Arrays;
+import java.util.Set;
+import java.util.TreeSet;
+
 /**
  *
  * @author Asib27
@@ -19,6 +23,14 @@ public class Player {
     private String position;
     private int jurseyNumber;
     private double salary;
+    public  static String[] VALID_POS =  {"Goalkeeper", "Defender", "Midfielder", "Forward"};
+    
+    static boolean isValidPosition(String position){
+        Set<String> valid =  new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        valid.addAll(Arrays.asList(VALID_POS));
+        
+        return valid.contains(position);
+    }
 
     public Player() {
     }
@@ -69,47 +81,47 @@ public class Player {
         return str;
     }
     
-    public Object get(PlayerAttribute field){
-        Object ob = null;
-        switch(field){
-            case AGE:
-                ob =  age;
-                break;
-            case CLUB:
-                ob =  club;
-                break;
-            case COUNTRY:
-                ob =  country;
-                break;
-            case HEIGHT:
-                ob =  height;
-                break;
-            case JURSEY:
-                ob =  jurseyNumber;
-                break;
-            case NAME:
-                ob =  name;
-                break;
-            case POSITION:
-                ob =  position;
-                break;
-            case SALARY:
-                ob =  salary;
-                break;
+    public String format(String separator){
+        StringBuilder sb = new StringBuilder();
+        
+        for (var field: PlayerAttribute.values()) {
+            sb.append(String.format("%-9s : ", field)).append(get(field)).append(separator);
         }
         
-        return ob;
+        sb.setLength(sb.length() - separator.length());
+        return sb.toString();
     }
     
-    public <T extends Comparable>int compare(PlayerAttribute field, T c){
-        Object ob = this.get(field);
+    
+    public Object get(PlayerAttribute field){
+        return switch(field){
+            case AGE ->       age;
+            case CLUB ->      club;
+            case COUNTRY ->   country;
+            case HEIGHT ->    height;
+            case JURSEY ->    jurseyNumber;
+            case NAME ->      name;
+            case POSITION ->  position;
+            case SALARY ->    salary;
+            default -> null;
+        };
+    }
+    
+    public <T extends Comparable>int compare(PlayerAttribute field, Object c){
+        T ob = (T) this.get(field);
         
-        return c.compareTo(ob) * (-1);
+        if(ob instanceof String){
+            return ((String) ob).compareToIgnoreCase((String) c);
+        }
+        return ob.compareTo(c);
     }
     
     public <T extends Comparable>int compare(PlayerAttribute field, Player p){
         T ob = (T) this.get(field);
         
+        if(ob instanceof String){
+            return ((String) ob).compareToIgnoreCase((String) p.get(field));
+        }
         return ob.compareTo(p.get(field));
     }
     
@@ -120,6 +132,10 @@ public class Player {
         
         System.out.println(p.get(PlayerAttribute.CLUB));
         System.out.println(p.compare(PlayerAttribute.AGE, 31));
+        
+        System.out.println(p.format(" , "));
+        
+        System.out.println(isValidPosition("Midfielder"));
     }
 
     
